@@ -13,12 +13,17 @@ class MyHomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const CircularProgressIndicator(),
+            Image.asset('assets/gif/gif.gif'),
             const SizedBox(height: 50),
             ElevatedButton(
               child: const Text('Run Heavy Task'),
               onPressed: () => useIsolate(),
               //runHeavyTaskWithOutIsolate(4000000000),
+            ),
+            SizedBox(height: 20,),
+            ElevatedButton(
+              child: const Text('Run Heavy Task without Isolate'),
+              onPressed: () => runHeavyTaskWithOutIsolate(10000000),
             ),
           ],
         ),
