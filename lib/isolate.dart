@@ -19,9 +19,8 @@ class HomePage extends StatelessWidget {
                   var total = await complexTask1();
                   debugPrint('Result 1: $total');
                 },
-                child: const Text('Task 1'),
+                child: Text('Task 1'),
               ),
-              //Isolate
               ElevatedButton(
                 onPressed: () async {
                   final receivePort = ReceivePort();
@@ -30,21 +29,20 @@ class HomePage extends StatelessWidget {
                     debugPrint('Result 2: $total');
                   });
                 },
-                child: const Text('Task 2'),
+                child: Text('Task 2'),
               ),
-             // Isolate with parameters
               ElevatedButton(
                 onPressed: () async {
                   final receivePort = ReceivePort();
                   await Isolate.spawn(
                     complexTask3,
-                    (iteration: 1000000000, sendPort: receivePort.sendPort),
+                    Task3(9879800000, receivePort.sendPort),
                   );
-                  receivePort.listen((total) {
-                    debugPrint('Result 3: $total');
+                  receivePort.listen((total3) {
+                    debugPrint('Result 3: $total3');
                   });
                 },
-                child: const Text('Task 3'),
+                child: Text('Task 3'),
               ),
             ],
           ),
@@ -65,19 +63,23 @@ class HomePage extends StatelessWidget {
 
 complexTask2(SendPort sendPort) {
   var total = 0.0;
-  for (var i = 0; i < 1000000000; i++) {
+  for (var i = 0; i < 1100000000; i++) {
     total += i;
   }
   sendPort.send(total);
 }
 
+class Task3 {
+  final int iteration;
+  final SendPort sendPort;
 
+  Task3(this.iteration, this.sendPort);
+}
 
-
-complexTask3((int iteration, SendPort sendPort) data) {
-  var total = 0.0;
+complexTask3(Task3 data) {
+  var total3 = 0.0;
   for (var i = 0; i < data.iteration; i++) {
-    total += i;
+    total3 += i;
   }
-  data.sendPort.send(total);
+  data.sendPort.send(total3);
 }
